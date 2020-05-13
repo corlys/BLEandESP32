@@ -1,7 +1,7 @@
 
 #include <WiFi.h> 
-const char ssid[] = "OLLIE-Internet";
-const char password[] = "borokokok";
+const char ssid[] = "rome";
+const char password[] = "aurelian";
 #include <ThingsBoard.h>
 #include <PubSubClient.h>
 
@@ -144,17 +144,15 @@ void loop() {
   }
 
   if (connected) {
-    Serial.print("Level Baterai : ");
+    Serial.print("Level Battery (%): ");
     std::string newValue = pRemoteCharacteristic->readValue(); 
     String dataSensor = newValue.c_str();
-    int batteryfetch = dataSensor.substring(0,5).toInt();
+    int batterydata = dataSensor.substring(0,5).toInt();
     
+    tb.sendTelemetryFloat("battery", batterydata);
     
-    tb.sendTelemetryFloat("battery", batteryfetch);
-    
-    Serial.print(batteryfetch); 
-    Serial.print(" | ");
-    Serial.println(dataSensor);
+    Serial.print(batterydata);
+    Serial.println();
 
   }else if(doScan){
     BLEDevice::getScan()->start(0);  
